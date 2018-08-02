@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <% if @search_term %>
+    <div class="company">There are <b><%= @jobs.count %></b> that inlcude <b><%= @search_term %></b> in the title or description
+    </div>
+    <br>
+    <%= button_to "Reset Search", jobs_path, method: :get, class: "reset_search_button" %>
+  <% end %>
+  <tbody>
+    <% @jobs.each do |job| %>
+      <tr>
+        <td>
+          <div class="job"><%= link_to(job.title, job.url, :target => "_blank") %></div>
+          <% job.tags.each do |tag| %>
+            <div class="tag"><%= link_to(tag, jobs_path(tag: tag.name), method: :get) %></div>
+          <% end %>
+          <div class="company"><%= job.company %>
+            <% badges = Job.get_badges(job.company) %>
+            <% badges.each do |b| %>
+              <%= b %>
+            <% end %>
+          </div>
+          <% if job.description %>
+            <h4 class="flip">Tell Me More ↓<h4>
+            <div class="panel"><%= job.description.html_safe %></div>
+          <% else %>
+            <%= link_to("Tell Me More →", job.url, :target => "_blank") %>
+          <% end %>
+          <hr align="left" width="75%">
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

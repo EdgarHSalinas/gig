@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RemoteGig</title>
+    <%= favicon_link_tag 'favicon.ico' %>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://tympanus.net/Development/DialogEffects/js/modernizr.custom.js"></script>
+    <script src="https://tympanus.net/Development/DialogEffects/js/classie.js"></script>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% if Rails.env.production? %>
+      <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-116039592-1', 'auto');
+      </script>
+  <% end %>
+  </head>
+  <div class="navbar">
+    <div class="icons">
+      <a data-dialog="maildialog" class="mailtrigger" style="font-size:24px"><%= fa_icon "envelope" %></a>
+      <a style="font-size:24px" href="https://twitter.com/myremotegig" target="_blank"><%= fa_icon("twitter") %></a>
+      <a style="font-size:24px" href="https://github.com/marklocklear/remote_gig" target="_blank"><%= fa_icon("github") %></a>
+      <a style="font-size:24px" href="/jobs.json" target="_blank"><%= fa_icon("rss") %></a>
+      <a search-dialog="searchdialog" class="searchtrigger" style="font-size:24px"><%= fa_icon "search" %></a>
+    </div>
+  </div>
+  <div id="maildialog" class="dialog dialog--close">
+    <div class="dialog__overlay"></div>
+    <div class="dialog__content">
+      <div class="morph-shape">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 560 280" preserveAspectRatio="none">
+          <rect x="3" y="3" fill="none" width="556" height="276"></rect>
+        </svg>
+      </div>
+      <div class="dialog-inner">
+        <!-- uncomment to add close button -->
+        <!-- <div><button class="action" data-dialog-close="a">&times;</button></div> -->
+        <h2><strong>Want More</strong> Remote Jobs?</h2>
+        <h3>Get Remote Jobs Directly To Your Inbox</h3>
+          <%= form_tag({controller: "jobs", action: "email_signup"}, method: "post") do %>
+            <%= text_field_tag(:email_address, nil, placeholder: 'Email Address') %>
+            <p><div class="button-wrap"><button data-dialog="maildialog" class="mailtrigger">Sign Me Up</button></div></p>
+          <% end %>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div id="searchdialog" class="dialog dialog--close">
+    <div class="dialog__overlay"></div>
+    <div class="dialog__content">
+      <div class="morph-shape">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 560 280" preserveAspectRatio="none">
+          <rect x="3" y="3" fill="none" width="556" height="276"></rect>
+        </svg>
+      </div>
+      <div class="dialog-inner">
+        <!-- uncomment to add close button -->
+        <!-- <div><button class="action" data-dialog-close="a">&times;</button></div> -->
+        <h2>Enter Search Term Below</h2>
+        <h3>company, laguage or framework</h3>
+          <%= form_tag({controller: "jobs", action: "index"}, method: "get") do %>
+            <%= text_field_tag(:search_term, nil, placeholder: 'search term') %>
+            <p><div class="button-wrap"><button search-dialog="searchdialog" class="searchtrigger">Search</button></div></p>
+          <% end %>
+      </div>
+      </div>
+    </div>
+  </div> 
+  <body>
+    <%= yield %>
+  </body>
+  <a href="#content" class="back-to-top">Top</a>
+</html>
